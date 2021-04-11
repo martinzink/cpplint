@@ -11,7 +11,8 @@ python:
 
 install:
   - pip install --upgrade pip
-  - pip install --upgrade setuptools
+  - pip install setuptools==42
+  - pip install setuptools-scm==5
   - pip install -e .[dev]
   - pip install tox-travis
 
