@@ -2697,6 +2697,7 @@ class CpplintTest(CpplintTestBase):
     self.TestLint('class X : public Y {};', '')
     self.TestLint('class X : public MACRO() {};', '')
     self.TestLint('class X : public decltype(expr) {};', '')
+    self.TestLint('concept Addable = requires(T x) { x + x; };', '')
     self.TestLint('DEFINE_FACADE(PCQueue::Watcher, PCQueue) {};', '')
     self.TestLint('VCLASS(XfaTest, XfaContextTest) {};', '')
     self.TestLint('class STUBBY_CLASS(H, E) {};', '')
