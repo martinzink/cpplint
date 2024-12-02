@@ -557,7 +557,7 @@ _CPP_HEADERS = frozenset([
     'concepts',
     'coroutine',
     'format',
-    'latch'
+    'latch',
     'numbers',
     'ranges',
     'semaphore',
