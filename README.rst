@@ -1,5 +1,6 @@
+#####################################
 cpplint - static code checker for C++
-=====================================
+#####################################
 
 .. image:: https://img.shields.io/pypi/v/cpplint.svg
     :target: https://pypi.python.org/pypi/cpplint
@@ -22,16 +23,15 @@ cpplint - static code checker for C++
 .. image:: https://img.shields.io/pypi/dm/cpplint.svg
     :target: https://pypi.python.org/pypi/cpplint
 
-Cpplint is a command-line tool to check C/C++ files for style issues following `Google's C++ style guide <http://google.github.io/styleguide/cppguide.html>`_.
-Cpplint is developed and maintained by Google Inc. at `google/styleguide <https://github.com/google/styleguide>`_, also see the `wikipedia entry <http://en.wikipedia.org/wiki/Cpplint>`_
+Cpplint is a command-line tool to check C/C++ files for style issues according to `Google's C++ style guide <http://google.github.io/styleguide/cppguide.html>`_.
 
-While Google maintains cpplint, Google is not (very) responsive to issues and pull requests, this fork aims to be (somewhat) more open to add fixes to cpplint to enable fixes, when those fixes make cpplint usable in wider contexts.
-Also see discussion here https://github.com/google/styleguide/pull/528.
+Cpplint used to be developed and maintained by Google Inc. at `google/styleguide <https://github.com/google/styleguide>`_. Nowadays, `Google is no longer maintaining the public version of cpplint <https://github.com/google/styleguide/pull/528#issuecomment-592315430>`_, and pretty much everything in their repo's PRs and issues about cpplint have gone unimplemented.
+
+This fork aims to update cpplint to modern specifications, and be (somewhat) more open to adding fixes and features to make cpplint usable in wider contexts.
 
 
 Installation
 ============
-
 
 To install cpplint from PyPI, run:
 
@@ -39,8 +39,12 @@ To install cpplint from PyPI, run:
 
     $ pip install cpplint
 
-Then run it with:
+Externally managed environments
+-------------------------------
+If you get the "This environment is externally managed" error, try to search and install cpplint with your system's package manager (e.g. apt, rpm, pacman...). If it doesn't exist, you can either package cpplint for your distribution or repeat the steps above with the :code:`--break-system-packages` flag.
 
+Usage
+-----
 .. code-block:: bash
 
     $ cpplint [OPTIONS] files
@@ -52,9 +56,7 @@ For full usage instructions, run:
     $ cpplint --help
 
 Changes
--------
-
-The modifications in this fork are minor fixes and cosmetic changes, such as:
+=======
 
 * python 3 compatibility
 * more default file extensions
@@ -65,15 +67,24 @@ The modifications in this fork are minor fixes and cosmetic changes, such as:
 * JUnit XML output format
 * Overriding repository root auto-detection via --repository
 * Support ``#pragma once`` as an alternative to header include guards
-* ... and a few more (most of which are open PRs on upstream)
-
+* ... and `quite a bit <https://github.com/cpplint/cpplint/blob/master/CHANGELOG.rst>`_ more
 
 Acknowledgements
-----------------
+================
 
 Thanks to Google Inc. for open-sourcing their in-house tool.
-Thanks to maintainers of the fork
 
-* `tkruse <https://github.com/tkruse>`_  
-* `mattyclarkson <https://github.com/mattyclarkson>`_
-* `theandrewdavis <https://github.com/theandrewdavis>`_
+Thanks to `our contributors <https://github.com/cpplint/cpplint/graphs/contributors>`_.
+
+Maintainers
+-----------
+
+* `@aaronliu0130 <https://github.com/aaronliu0130>`_
+* `@jayvdb <https://github.com/jayvdb>`_
+
+Former
+^^^^^^
+
+* `@tkruse <https://github.com/tkruse>`_
+* `@mattyclarkson <https://github.com/mattyclarkson>`_
+* `@theandrewdavis <https://github.com/theandrewdavis>`_
