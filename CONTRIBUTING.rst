@@ -1,92 +1,92 @@
+******************
 Contributing guide
-==================
+******************
 
 Thanks for your interest in contributing to cpplint.
 
-Any kinds of contributions are welcome: Bug reports, Documentation, Patches.
+Any kinds of contributions are welcome: Bug reports, Documentation, Patches. However, here are some contributions you probably shouldn't make:
 
-However cpplint is a bit special as a project because it aims to closely follow what Google does in the upstream repository.
-That means Google remains the source of all major requirements and functionality of cpplint, where as this fork adds extensions to cpplint run on more environments and in more companies.
-The difference between this cpplint and Google should remain so small that anyone can at a glance see there is no added change that could be regarded as a security vulnerability.
+* Drastic reorganization
+  * Making the code conform to Google's Python style guidelines
+* Features that could be regarded as a security vulnerability
 
-Here are some tips to make best use of your time:
-
-1. Feature suggestions should initially be opened at the `upstream repository <https://github.com/google/styleguide>`_, but feel free to open an issue here to and link to the upstream issue.
-
-2. Consider the goals and non-goals of this project:
-
-Goals:
-
-* Provides cpplint as a PyPI package for multiple python versions
-* Add a few features and fixes aimed at usages outside Google
-
-Non-Goals:
-
-* Become an independent fork adding major features
-* Fix python style issues in cpplint
-
+If you need some ideas, you may check out some of the tasks in our `issue tracker <https://github.com/cpplint/cpplint/issues>`_.
 
 Development
------------
+===========
 
-For many tasks, it is okay to just develop using a single installed python version. But if you need to test/debug the project in multiple python versions, you need to install those versions::
+For many tasks, it is okay to just develop using a single installed python version. But if you need to test/debug the project in multiple python versions, you need to install those versions:
 
 1. (Optional) Install multiple python versions
 
-   1. (Optional) Install [pyenv](https://github.com/pyenv/pyenv-installer) to manage python versions
+   1. (Optional) Install `pyenv <https://github.com/pyenv/pyenv-installer>`_ to manage python versions
    2. (Optional) Using pyenv, install the python versions used in testing::
 
-        pyenv install 2.7.16
-        pyenv install 3.6.8
+        pyenv install 3.12.6
         # ...
-        pyenv local 2.7.16 3.6.8 ...
+        pyenv local 3.12.6 ...
 
-It may be okay to run and test python against locally installed libraries, but if you need to have a consistent build, it is recommended to manage your environment using virtualenv: [virtualenv](https://virtualenv.pypa.io/en/latest/ ), [virtualenvwrapper](https://pypi.org/project/virtualenvwrapper/ ):
+It may be okay to run and test python against locally installed libraries, but if you need to have a consistent build, it is recommended to manage your environment using virtualenv: `virtualenv <https://virtualenv.pypa.io/en/latest/>`_, `virtualenvwrapper <https://pypi.org/project/virtualenvwrapper/>`_::
 
-1. (Optional) Setup a local virtual environment with all necessary tools and libraries::
+    mkvirtualenv cpplint [-p /usr/bin/python3]
+    pip install .[dev]
 
-      mkvirtualenv cpplint [-p /usr/bin/python3]
-      pip install .[dev]
-
-Alternatively you can locally install patches like this::
+Alternatively, you can locally install patches like this::
 
     pip install -e .[dev]
     # for usage without virtualenv, add --user
 
-You can setup your local environment for developing patches for cpplint like this:
+Pull requests
+-------------
+
+When you're finished with a pull request, please:
+
+* add a relevant test case to cpplint_unittest.py
+* add a summary of what your changes do to CHANGELOG.rst
+* specify the problem solved in the pull request
+* make sure that your code passes the tests and lints
+* don't force-push to the branch. These make the commit history messy, and we squash all commits when merging anyways.
+
+.. _testing:
+
+Testing
+-------
+
+You can test your changes under your local python environment by running the tests and lints below:
 
 .. code-block:: bash
 
+    # install test requirements
+    pip install .[test]
     # run a single test
-    pytest --no-cov cpplint_unittest.py -k testExclude
+    pytest --no-cov cpplint_unittest.py -k testName
     # run a single CLI integration test
     pytest --no-cov cpplint_clitest.py -k testSillySample
-    # run all tests
-    ./setup.py test
-    ./setup.py lint
-    ./setup.py ci # all the above
-    ./flake8
-    tox    # all of the above in all python environments
+    # run all tests. you don't have to run the above tests separately
+    pytest
+    # lint the code
+    pylint cpplint.py
+    flake8
+
+Alternatively, you can run `tox` to automatically run all tests and lints. Use `-e ` followed by the python runner and version (which you must have installed) to automatically generate the testing environment and run the above tests and lints in it. For example, `tox -e py39` does the steps in Python 3.9, `tox -e py312` does the steps in Python 3.12, and `tox -e pypy3` does the steps using the latest version of the pypy interpreter.
 
 Releasing
----------
+=========
 
-The release process first prepares the documentation, then publishes to testpypi to verify, then releases to real pypi. Testpypi acts like real pypi, so broken releases cannot be deleted. For a typical bugfixing release, no special issue on testpypi is expected (but it's still good practice).
-
-To release a new version:
+The release process first prepares the documentation, then publishes to testpypi to verify, then releases to real pypi. Testpypi acts like real pypi, so broken releases cannot be deleted. For a typical bugfixing release, no special issue on testpypi is expected (but it's still good practice). The commands are documented below, and assume you've went through the testing steps above.
 
 .. code-block:: bash
 
     # prepare files for release
-    vi cpplint.py # increment the version
-    vi changelog.rst # log changes
-    git add cpplint.py changelog.rst
+    $EDITOR cpplint.py # increment the version
+    $EDITOR CHANGELOG.rst # log changes
+    git add cpplint.py CHANGELOG.rst
     git commit -m "Releasing x.y.z"
-    # test-release (on env by mkvirtualenv -p /usr/bin/python3)
-    pip install --upgrade setuptools wheel twine
+    # Build
+    pip install --upgrade build wheel twine
     rm -rf dist
+    python -m build --sdist --wheel
     # Test release, requires account on testpypi
-    python3 setup.py sdist bdist_wheel
     twine upload --repository testpypi dist/*
     # ... Check website and downloads from https://test.pypi.org/project/cpplint/
     # Actual release
@@ -94,12 +94,12 @@ To release a new version:
     git tag x.y.z
     git push --tags
 
-After releasing, it is be good practice to comment on github for closed tickets, to notify authors.
+After releasing, it is be good practice to comment on completed GitHub issues to notify authors.
 
 Catching up with Upstream
--------------------------
+=========================
 
-For maintainers, it is a regular duty to look at what cpplint changes were merged upstream, to include them in this fork (though these updates happen once per year and less).
+For maintainers, it is a regular duty to look at what cpplint changes were merged upstream and include them in this fork (though these updates happen rarely).
 
 Checkout here and upstream google:
 
@@ -120,7 +120,7 @@ To incorporate google's changes:
     git merge google/gh-pages # this will have a lot of conflicts
     # ... solve conflicts
     git merge -- continue
-    
+
     ## Rebase workflow (dirty, creates new commits)
     git checkout -b updates FETCH_HEAD
     git rebase master # this will have a lot of conflicts, most of which can be solved with the next command (run repeatedly)
